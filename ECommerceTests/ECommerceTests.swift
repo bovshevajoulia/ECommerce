@@ -6,31 +6,78 @@
 //
 
 import XCTest
+import Combine
 @testable import ECommerce
 
 class ECommerceTests: XCTestCase {
-
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-    }
-
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-    }
-
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-        // Any test you write for XCTest can be annotated as throws and async.
-        // Mark your test throws to produce an unexpected failure when your test encounters an uncaught error.
-        // Mark your test async to allow awaiting for asynchronous code to complete. Check the results with assertions afterwards.
-    }
-
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
+    
+    /// Set of an 'AnyCancellable' to store all subscriptions
+    private var subscriptions = Set<AnyCancellable>()
+    
+    /// Because we have test STATIC MOCK REST API server with static data we can check the GET request and decoding data
+    func test_get_basket_products__from_server_succeess() throws {
+        let promise = expectation(description: "basket products")
+        
+        let manager = StoreManager(network: NetworkService())
+        manager.basketProducts()
+            .sink { completion in
+                switch completion {
+                    case .finished:
+                        break
+                    case .failure(let error):
+                        print("test_get_basket_products__from_server_succeess: error \(error)")
+                        XCTFail()
+                }
+        } receiveValue: { basketProductsResponse in
+            print(basketProductsResponse)
+            promise.fulfill()
         }
+        .store(in: &subscriptions)
+        
+        wait(for: [promise], timeout: 3)
     }
-
+    
+    func test_get_store_products_from_server_succeess() throws {
+        let promise = expectation(description: "store products")
+        
+        let manager = StoreManager(network: NetworkService())
+        manager.storeProducts()
+            .sink { completion in
+                switch completion {
+                    case .finished:
+                        break
+                    case .failure(let error):
+                        print("test_get_store_products_from_server_succeess: error \(error)")
+                        XCTFail()
+                }
+        } receiveValue: { storeProductsResponse in
+            print(storeProductsResponse)
+            promise.fulfill()
+        }
+        .store(in: &subscriptions)
+        
+        wait(for: [promise], timeout: 3)
+    }
+    
+    func test_get_product_details_from_server_succeess() throws {
+        let promise = expectation(description: "product details")
+        
+        let manager = StoreManager(network: NetworkService())
+        manager.productDetails()
+            .sink { completion in
+                switch completion {
+                    case .finished:
+                        break
+                    case .failure(let error):
+                        print("test_get_product_details_from_server_succeess: error \(error)")
+                        XCTFail()
+                }
+        } receiveValue: { productDetails in
+            print(productDetails)
+            promise.fulfill()
+        }
+        .store(in: &subscriptions)
+        
+        wait(for: [promise], timeout: 3)
+    }
 }

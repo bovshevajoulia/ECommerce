@@ -9,9 +9,15 @@ import SwiftUI
 
 @main
 struct ECommerceApp: App {
+    
+    @StateObject var stateManager = StateManager()
+    @StateObject var homeViewModel = HomeViewModel(manager: StoreManager())
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            MainView()
+                .environmentObject(stateManager)
+                .environmentObject(homeViewModel)
         }
     }
 }
