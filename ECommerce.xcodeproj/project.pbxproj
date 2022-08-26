@@ -256,7 +256,6 @@
 		A020C07328B65A4C00363C9C /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				A020C08D28B770BF00363C9C /* Basket */,
 				A020C08C28B770B500363C9C /* Home */,
 				A020C08528B74A3F00363C9C /* Components */,
 				A020C09828B774A600363C9C /* MainView.swift */,
@@ -293,13 +292,6 @@
 				A020C09228B7710500363C9C /* ProductDetailsView.swift */,
 			);
 			path = Home;
-			sourceTree = "<group>";
-		};
-		A020C08D28B770BF00363C9C /* Basket */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Basket;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
